@@ -1,0 +1,36 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block title %} My Journal {% endblock %} 
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static "blog/post.css" %}"> 
+    <link rel="stylesheet" href="{% static "blog/index.css" %}">
+{% endblock %}
+
+{% block content %}
+
+<section id="welcome">
+  <header>
+    <img src="{% static "blog/images/valentine.png" %}" alt="Richie - The Author of This Blog" />
+    <h2>RICHIE'S JOURNAL</h2>
+  </header>
+  <p>Never compromise, not even in the face of Armageddon</p>
+</section>
+
+<section id="latest-posts">
+  <h2>My Latest Thoughts</h2>
+
+  <ul>
+    {% include "blog/includes/post.html" %}
+  </ul>
+</section>
+
+<section id="about">
+    <h2>What I Do</h2>
+    <p>I love programming and python in general. I dislike Java</p>
+    <p>
+        My goal is to be a decent at ML and web development
+    </p>
+</section>
+{% endblock %}
