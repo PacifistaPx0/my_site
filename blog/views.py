@@ -83,8 +83,14 @@ def index(request):
 
 
 def posts(request):
-    return render(request, "blog/all_posts.html")
+    sorted_posts = sorted(all_posts, key=get_date)
+    return render(request, "blog/all_posts.html", {
+        "posts": sorted_posts
+    })
 
 
 def single_post(request, slug):
-    return render(request, "blog/post-detail.html")
+    identified_post = next(post for post in all_posts if post["slug"] == slug )
+    return render(request, "blog/post-detail.html", {
+        "post": identified_post
+    })
