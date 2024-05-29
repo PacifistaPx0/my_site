@@ -1,4 +1,4 @@
-from datetime import date
+
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 
@@ -11,7 +11,7 @@ from .models import Post
 
 def index(request):
     
-    posts = Post.objects.all().order_by("-date")
+    posts = Post.objects.all().order_by("-date")[:3]
     context = {
         "posts" : posts
     }
