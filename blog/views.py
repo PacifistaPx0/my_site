@@ -2,6 +2,8 @@ from datetime import date
 
 from django.shortcuts import render
 
+from .models import Post
+
 all_posts = [
     {
         "slug": "hike-in-the-mountains",
@@ -75,11 +77,12 @@ def get_date(post):
 
 
 def index(request):
-    sorted_posts = sorted(all_posts, key=get_date)
-    latest_posts = sorted_posts[-3:]
-    return render(request, "blog/index.html", {
-        "posts": latest_posts
-    })
+    
+    posts = Post.objects.all().order_by("-date")
+    context = {
+        "posts" : posts
+    }
+    return render(request, "blog/index.html", context)
 
 
 def posts(request):
