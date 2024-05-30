@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
@@ -9,14 +10,16 @@ class Post(models.Model):
     excerpt = models.CharField(max_length=500)
     image_name = models.CharField(max_length=50)
     date = models.DateTimeField(auto_now_add=True)
-    content = models.TextField()
-    author = models.ForeignKey("Author", on_delete=models.CASCADE, related_name="posts", null=True)
-    tags = models.ManyToManyField("Tag", related_name="posts")
+    content = models.TextField(validators=[MinLengthValidator(10)])
+    author = models.ForeignKey(
+        "Author", on_delete=models.SET_NULL, related_name="posts", null=True)
+    tags = models.ManyToManyField("Tag", related_name="posts", blank=True)
     slug = models.SlugField(default="", blank=True,
                             null=False, db_index=True)
-    
+
     def __str__(self):
         return self.title
+
 
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
@@ -28,9 +31,10 @@ class Author(models.Model):
 
     def __str__(self):
         return self.full_name()
-    
+
+
 class Tag(models.Model):
-    caption = models.CharField(max_length=50, null=True, blank=True)
+    caption = models.CharField(max_length=50, null=True)
 
     def __str__(self):
         return self.caption
