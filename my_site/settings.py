@@ -128,3 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS =[
     BASE_DIR / "static"
 ]
+
+MEDIA_ROOT = BASE_DIR / "uploads" #django to store our image file in this path
+MEDIA_URL = "/user-media/" #url we want to expose from which these files can be uploaded

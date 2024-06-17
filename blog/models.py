@@ -9,6 +9,7 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     excerpt = models.CharField(max_length=500)
     image_name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to="images", null=True)
     date = models.DateTimeField(auto_now_add=True)
     content = models.TextField(validators=[MinLengthValidator(10)])
     author = models.ForeignKey(
@@ -31,6 +32,12 @@ class Author(models.Model):
 
     def __str__(self):
         return self.full_name()
+    
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    email = models.EmailField()
+    comment = models.TextField(null=False, blank=False)
+    date = models.DateTimeField(auto_now_add=True)
 
 
 class Tag(models.Model):
