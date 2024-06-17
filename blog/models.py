@@ -8,7 +8,6 @@ from django.core.validators import MinLengthValidator
 class Post(models.Model):
     title = models.CharField(max_length=50)
     excerpt = models.CharField(max_length=500)
-    image_name = models.CharField(max_length=50)
     image = models.ImageField(upload_to="images", null=True)
     date = models.DateTimeField(auto_now_add=True)
     content = models.TextField(validators=[MinLengthValidator(10)])
