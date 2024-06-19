@@ -38,6 +38,9 @@ class Comment(models.Model):
     comment = models.TextField(null=False, blank=False)
     date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.email
+
 
 class Tag(models.Model):
     caption = models.CharField(max_length=50, null=True)

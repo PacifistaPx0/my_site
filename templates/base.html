@@ -20,5 +20,8 @@
     </header>
     {% block content %}
     {% endblock %}    
+    {% block js_files %}
+        <script src="{% static 'blog/js/post-detail.js' %}"></script>
+    {% endblock %}
 </body>
 </html>

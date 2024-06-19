@@ -32,4 +32,34 @@
     <main>
         {{ post.content|linebreaks }}
     </main>
+
+    <section id="comment-section">
+        <h2>Comments</h2>
+        {% for comment in comments %}
+        <div class="comment">
+            <p>{{ comment.email }}</p>
+            <p>{{ comment.comment }}</p>
+            <p>{{ comment.date }}</p>
+        </div>
+        {% empty %}
+        <p>No comments yet.</p>
+        {% endfor %}
+        <div class="comment">
+            <button class="comment-btn">Comment</button>
+            <div class="comment-form" style="display: none;">
+                <form action="{% url 'single-post-page'  post.slug %}" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-control {% if field.errors %} errors {% endif %}">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {{ field.error }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit">Post</button>
+                </form>
+            </div>
+        </div>
+    </section>
 {% endblock %}
+
