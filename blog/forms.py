@@ -9,7 +9,7 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ["email", "comment"]
-        exlcude = ["date"]
+        exlcude = ["date", "post"]
         labels = {
             "comment":"Leave a comment",
             "email":"Email Address"
