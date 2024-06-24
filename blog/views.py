@@ -1,5 +1,6 @@
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
 from django.views.generic import CreateView, DetailView, ListView
 
 from .models import Post, Comment
@@ -22,33 +23,40 @@ class PostsView(ListView):
     context_object_name = "posts"
     ordering = "-date"
 
-class SinglePostView(DetailView):
-    model = Post
+class SinglePostView(View):
     template_name = "blog/post-detail.html"
-    context_object_name = "post"
-    slug_field = "slug"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["form"] = CommentForm()
-        context["comments"] = Comment.objects.filter(post=self.object)
-        return context
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
+        comments = Comment.objects.filter(post=post)
+        form = CommentForm()
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
+        context = {
+            "post": post,
+            "form": form,
+            "comments": comments,
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
         form = CommentForm(request.POST)
+
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = self.object
+            comment.post = post
             comment.save()
-            context["form"] = CommentForm()
-            context["comments"] = Comment.objects.filter(post=self.object)
-            return self.render_to_response(context)
-        else:
-            context["form"] = form
-            context["comments"] = Comment.objects.filter(post=self.object)
-            return self.render_to_response(context)
+            return redirect('single-post-page', slug=post.slug)
+
+        comments = Comment.objects.filter(post=post)
+        context = {
+            "post": post,
+            "form": form,
+            "comments": comments,
+        }
+
+        return render(request, self.template_name, context)
 
 
 """
