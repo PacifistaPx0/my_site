@@ -69,10 +69,14 @@ class ReadLaterView(View):
         stored_posts = request.session.get("stored_posts", [])
         post_id = int(request.POST["post_id"])
 
-        if post_id not in stored_posts:
-            stored_posts.append(post_id)
-            request.session["stored_posts"] = stored_posts  # Save the updated list back to the session
-            request.session.modified = True  # Mark the session as modified to ensure it's saved
+        if "add" in request.POST:
+            if post_id not in stored_posts:
+                stored_posts.append(post_id)
+        elif "remove" in request.POST:
+            stored_posts = [id for id in stored_posts if id != post_id] #if post id in list, delete
+
+        request.session["stored_posts"] = stored_posts  # Save the updated list back to the session
+        request.session.modified = True  # Mark the session as modified to ensure it's saved
 
         return redirect("read-later")  # Use the name of your URL pattern here
 

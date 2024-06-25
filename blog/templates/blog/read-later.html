@@ -21,8 +21,10 @@
                             <img src="{{ post.image.url }}" alt="{{ post.title }}">
                             <p>{{ post.excerpt }}</p>
                         </a>
-                        <form action="" method="POST">
+                        <form action="{% url "read-later" %}" method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <input type="hidden" name="remove" value="true">
                             <button>Remove from Read Later</button>
                         </form>
                     </article>
