@@ -28,7 +28,7 @@ class SinglePostView(View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        comments = Comment.objects.filter(post=post)
+        comments = Comment.objects.filter(post=post).order_by('-date')
         form = CommentForm()
 
         context = {
@@ -44,12 +44,12 @@ class SinglePostView(View):
         form = CommentForm(request.POST)
 
         if form.is_valid():
-            comment = form.save(commit=False)
+            comment = form.save(commit=False) 
             comment.post = post
             comment.save()
             return redirect('single-post-page', slug=post.slug)
 
-        comments = Comment.objects.filter(post=post)
+        comments = Comment.objects.filter(post=post).order_by('-date')
         context = {
             "post": post,
             "form": form,
