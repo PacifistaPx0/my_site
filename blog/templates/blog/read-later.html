@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Read Later{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'blog/read-later.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section id="read-later">
+        <h2>Your Read Later List</h2>
+        {% if read_later_posts %}
+            <ul>
+            {% for post in read_later_posts %}
+                <li>
+                    <article class="post">
+                        <a href="{% url 'single-post-page' post.slug %}">
+                            <h3>{{ post.title }}</h3>
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                            <p>{{ post.excerpt }}</p>
+                        </a>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <button>Remove from Read Later</button>
+                        </form>
+                    </article>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven't added any posts to your Read Later list yet.</p>
+        {% endif %}
+    </section>
+{% endblock %}

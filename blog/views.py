@@ -60,18 +60,21 @@ class SinglePostView(View):
         return render(request, self.template_name, context)
 
 class ReadLaterView(View):
+    def get(self, request):
+        stored_posts = request.session.get("stored_posts", [])
+        posts = Post.objects.filter(id__in=stored_posts)
+        return render(request, "blog/read-later.html", {"read_later_posts": posts})
+
     def post(self, request):
-        stored_posts = request.session.get("stored_posts")
-
-        if stored_posts is None:
-            stored_posts = []
-
+        stored_posts = request.session.get("stored_posts", [])
         post_id = int(request.POST["post_id"])
 
         if post_id not in stored_posts:
             stored_posts.append(post_id)
+            request.session["stored_posts"] = stored_posts  # Save the updated list back to the session
+            request.session.modified = True  # Mark the session as modified to ensure it's saved
 
-        return HttpResponseRedirect("/")
+        return redirect("read-later")  # Use the name of your URL pattern here
 
         
 """
