@@ -22,6 +22,14 @@
             
         {% endif %}
     </div>
+    <div>
+        <form action="{% url "read-later" %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" value="{{ post.id }}" name="post_id">
+            <button class="read-later-btn">Read Later</button>
+        </form>
+        <button class="read-later-btn">Share</button>
+    </div>
     <article>
         <img src="{{ post.image.url }}" alt="post.title" />
         <address>By <a href="mailto:{{ post.author.email }}">{{ post.author }}</a></address>

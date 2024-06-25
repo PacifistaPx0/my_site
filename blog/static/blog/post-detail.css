@@ -74,6 +74,30 @@ main {
   border-radius: 8px;
 }
 
+.read-later-btn {
+  background-color: #7e5bef;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 3rem;
+  transition: background-color 0.3s ease;
+}
+
+.read-later-btn:hover {
+  background-color: #6b46c1;
+}
+
+#summary > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 /* New styles for forms and comments */
 #comment-section {
   margin-top: 2rem;

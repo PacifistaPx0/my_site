@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.generic import CreateView, DetailView, ListView
+from django.http import HttpResponseRedirect
 
 from .models import Post, Comment
 from .forms import CommentForm
@@ -58,7 +59,21 @@ class SinglePostView(View):
 
         return render(request, self.template_name, context)
 
+class ReadLaterView(View):
+    def post(self, request):
+        stored_posts = request.session.get("stored_posts")
 
+        if stored_posts is None:
+            stored_posts = []
+
+        post_id = int(request.POST["post_id"])
+
+        if post_id not in stored_posts:
+            stored_posts.append(post_id)
+
+        return HttpResponseRedirect("/")
+
+        
 """
 def index(request):
     
